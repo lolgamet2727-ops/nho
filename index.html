@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Je te laisserai des mots</title>
+    <title>Per la mia Persona Speciale</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Sfondo con cuori che cadono (creati via JS) -->
+    <div class="heart-container" id="heartContainer"></div>
 
-    <div class="overlay"></div>
+    <div class="container">
+        <div class="glass-card">
+            <img src="https://media.tenor.com" alt="Cute GIF" class="top-gif">
+            
+            <h1 class="title">Sei il mio mondo</h1>
+            <p class="message">
+                "Je te laisserai des mots..." <br>
+                Volevo solo dirti quanto sei importante per me. Ogni momento con te è un regalo.
+            </p>
 
-    <div class="main-content">
-        <header class="fade-in">
-            <img src="https://i.pinimg.com" alt="Animazione" class="main-gif">
-            <h1>Per Te</h1>
-        </header>
+            <div class="gif-grid">
+                <img src="https://media.tenor.com" alt="Amore 1">
+                <img src="https://media.tenor.com" alt="Amore 2">
+            </div>
 
-        <section class="card fade-in-delay">
-            <p>Clicca sotto per ascoltare la nostra musica</p>
-            <button id="playButton">Ascolta la musica 🎵</button>
-            <br>
-            <img src="https://media.tenor.com" alt="Amore Mio" class="love-gif">
-        </section>
+            <button id="playButton">Ascolta la nostra musica 🎵</button>
+        </div>
     </div>
 
-    <!-- Collegamento al file Javascript -->
     <script src="script.js"></script>
 </body>
 </html>
-
