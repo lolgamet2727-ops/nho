@@ -1,79 +1,24 @@
-,<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <title>Happy Birthday Azzu</title>
 <style>
-/* ===== STILI BASE ===== */
-html, body {
-  margin:0;
-  padding:0;
-  background:black;
-  overflow:hidden;
-  font-family:'Courier New', monospace;
-}
+html, body { margin:0; padding:0; background:black; overflow:hidden; font-family:'Courier New', monospace; }
 canvas { position:fixed; top:0; left:0; z-index:0; }
 
-/* ===== LIBRO ===== */
-.book {
-  position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  width:520px; height:400px;
-  perspective:1800px;
-  cursor:pointer;
-  z-index:10;
-}
-.page {
-  position:absolute;
-  width:100%; height:100%;
-  background:#1f0026;
-  border:2px solid #c77dff;
-  box-shadow:0 0 40px #b84dff;
-  transform-origin:left;
-  transition: transform 1.2s cubic-bezier(0.77,0,0.175,1);
-  backface-visibility:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  text-align:center;
-  overflow:hidden;
-  padding:15px;
-  border-radius:10px;
-}
+.book { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:520px; height:400px; perspective:1800px; cursor:pointer; z-index:10; }
+.page { position:absolute; width:100%; height:100%; background:#1f0026; border:2px solid #c77dff; box-shadow:0 0 40px #b84dff; transform-origin:left; transition: transform 1.2s cubic-bezier(0.77,0,0.175,1); backface-visibility:hidden; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center; overflow:hidden; padding:15px; border-radius:10px; }
 .page1 { z-index:13; }
 .page2 { z-index:12; }
 .page3 { z-index:11; }
 
-/* ===== CONTENUTO ===== */
-.page-content img {
-  max-width:100%;
-  max-height:250px;
-  border-radius:12px;
-  box-shadow:0 0 30px #ff6bff;
-}
+.page-content img { max-width:100%; max-height:250px; border-radius:12px; box-shadow:0 0 30px #ff6bff; }
 .page-content { color:#f3d9ff; font-size:1.25em; }
 .neon { color:#d46bff; text-shadow:0 0 10px #d46bff,0 0 25px #b84dff,0 0 45px #6a00ff; }
 
-/* ===== CUORI ===== */
-.heart {
-  position:absolute;
-  font-size:2em;
-  color:#ff4d88;
-  animation:beat 1s infinite;
-}
-@keyframes beat {
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.4);}
-}
-
-/* ===== PULSANTE MATRIX ===== */
-.matrix-char {
-  font-weight:bold;
-}
-
-/* ===== SFUMATURE MATRIX ===== */
+.heart { position:absolute; font-size:2em; color:#ff4d88; animation:beat 1s infinite; }
+@keyframes beat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.4);} }
 </style>
 </head>
 <body>
@@ -82,22 +27,17 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
 <canvas id="fireworks"></canvas>
 
 <div class="book" id="book">
-  <!-- Pagina 1: Dedica -->
   <div class="page page1">
     <div class="page-content neon">
       <p>Amore mio,<br><br>oggi diventi grande, ma per me resti sempre la persona che mi fa sorridere ogni giorno. Camminare al tuo fianco è il regalo più bello che potessi desiderare.</p>
       <p>Buon compleanno, Azzu.<br>Io ci sarò sempre. 💜</p>
     </div>
   </div>
-
-  <!-- Pagina 2: Orsetti -->
   <div class="page page2">
     <div class="page-content">
       <img src="https://i.imgur.com/7YQZ7ZC.png" alt="Orsetti abbracciati">
     </div>
   </div>
-
-  <!-- Pagina 3: Foto finale -->
   <div class="page page3">
     <div class="page-content">
       <img src="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg" alt="Copertina finale">
@@ -106,28 +46,34 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
 </div>
 
 <script>
-/* ===== MATRIX ===== */
+/* ===== MATRIX MULTI-STREAM ===== */
 const m=document.getElementById("matrix"), ctx=m.getContext("2d");
 m.width=window.innerWidth; m.height=window.innerHeight;
-const message="HAPPY BIRTHDAY AZZU";
+
+const chars="HAPPY BIRTHDAY AZZU".split("");
 const fontSize=22;
 const columns=Math.floor(m.width/fontSize);
-const drops=Array(columns).fill(0);
+let drops=[];
+
+// Ogni colonna avrà velocità e posizione iniziale random
+for(let i=0;i<columns;i++){
+  drops[i]={y:Math.random()*m.height, speed:Math.random()*1.5+0.5};
+}
 
 function drawMatrix(){
   ctx.fillStyle="rgba(0,0,0,0.08)";
   ctx.fillRect(0,0,m.width,m.height);
   ctx.font=fontSize+"px monospace";
   for(let i=0;i<columns;i++){
-    const charIndex=Math.floor(drops[i])%message.length;
-    const char=message[charIndex];
+    const char=chars[Math.floor(Math.random()*chars.length)];
     const colors=["#d46bff","#b84dff","#ff6bff"];
     ctx.fillStyle=colors[Math.floor(Math.random()*colors.length)];
-    ctx.fillText(char,i*fontSize,drops[i]*fontSize);
-    drops[i] = drops[i]*fontSize>m.height ? 0 : drops[i]+0.7;
+    ctx.fillText(char,i*fontSize,drops[i].y);
+    drops[i].y += drops[i].speed*fontSize;
+    if(drops[i].y>m.height) drops[i].y = -fontSize*Math.random()*20;
   }
 }
-setInterval(drawMatrix,40);
+setInterval(drawMatrix,35);
 
 /* ===== FUOCHI D'ARTIFICIO ===== */
 const f=document.getElementById("fireworks"), fctx=f.getContext("2d");
@@ -160,11 +106,8 @@ let state=0;
 book.onclick=(e)=>{
   const rect=book.getBoundingClientRect();
   const x=e.clientX-rect.left;
-  if(x<rect.width/2){
-    state=Math.max(0,state-1);
-  }else{
-    state=Math.min(pages-1,state+1);
-  }
+  if(x<rect.width/2) state=Math.max(0,state-1);
+  else state=Math.min(pages-1,state+1);
   updateBook();
 };
 
@@ -172,7 +115,6 @@ function updateBook(){
   const pagesDiv=["page1","page2","page3"];
   pagesDiv.forEach((p,i)=>{
     const el=document.querySelector("."+p);
-    // effetto leggero curvatura
     if(i<state){
       el.style.transform="rotateY(-160deg) rotateZ("+(Math.random()*2-1)+"deg)";
     } else {
@@ -201,6 +143,5 @@ window.addEventListener("resize",()=>{
   f.height=window.innerHeight;
 });
 </script>
-
 </body>
 </html>
