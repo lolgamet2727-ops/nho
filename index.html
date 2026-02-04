@@ -20,7 +20,14 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+}
+
+/* ASSICURATI CHE I CANVAS SIANO DIETRO IL LIBRO */
+#matrix {
+  z-index: 0;
+}
+#fireworks {
+  z-index: 0;
 }
 
 /* ===== BOOK ===== */
@@ -32,7 +39,7 @@ canvas {
   width: 360px;
   height: 260px;
   perspective: 1600px;
-  z-index: 10;
+  z-index: 10; /* sopra i canvas */
   cursor: pointer;
 }
 
