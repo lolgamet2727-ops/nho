@@ -9,88 +9,80 @@
 
 <style>
 html, body {
-  margin: 0;
-  padding: 0;
-  background: black;
-  overflow: hidden;
-  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
 }
 
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
-/* ASSICURATI CHE I CANVAS SIANO DIETRO IL LIBRO */
-#matrix {
-  z-index: 0;
-}
-#fireworks {
-  z-index: 0;
-}
+/* Canvas dietro il libro */
+#matrix { z-index: 0; }
+#fireworks { z-index: 0; }
 
 /* ===== BOOK ===== */
 .book {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 360px;
-  height: 260px;
-  perspective: 1600px;
-  z-index: 10; /* sopra i canvas */
-  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  height: 260px;
+  perspective: 1600px;
+  z-index: 10; /* sopra i canvas */
+  cursor: pointer;
 }
 
 .page {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #1f0026;
-  border: 2px solid #c77dff;
-  box-shadow: 0 0 30px #b84dff;
-  transform-origin: left;
-  transition: transform 1.5s;
-  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #1f0026;
+  border: 2px solid #c77dff;
+  box-shadow: 0 0 30px #b84dff;
+  transform-origin: left;
+  transition: transform 1.5s;
+  backface-visibility: hidden;
 }
 
-.cover {
-  z-index: 14;
-  background-image: url('https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg');
-  background-size: cover;
-  background-position: center;
+/* Z-index crescente per vedere le pagine sopra i canvas */
+.cover { 
+  z-index: 14; 
+  background-image: url('https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg');
+  background-size: cover;
+  background-position: center;
 }
+.page1 { z-index: 15; }
+.page2 { z-index: 16; }
 
-.page1 { z-index: 13; }
-.page2 { z-index: 12; }
-
-.book.open1 .cover {
-  transform: rotateY(-160deg);
-}
-.book.open2 .page1 {
-  transform: rotateY(-160deg);
-}
+.book.open1 .cover { transform: rotateY(-160deg); }
+.book.open2 .page1 { transform: rotateY(-160deg); }
 
 .page-content {
-  padding: 20px;
-  color: #f3d9ff;
-  text-align: center;
+  padding: 20px;
+  color: #f3d9ff;
+  text-align: center;
 }
 
 .neon {
-  color: #d46bff;
-  text-shadow:
-    0 0 10px #d46bff,
-    0 0 25px #b84dff,
-    0 0 45px #6a00ff;
+  color: #d46bff;
+  text-shadow:
+    0 0 10px #d46bff,
+    0 0 25px #b84dff,
+    0 0 45px #6a00ff;
 }
 
 img {
-  max-width: 100%;
-  max-height: 180px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #ff6bff;
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #ff6bff;
 }
 </style>
 </head>
@@ -106,34 +98,34 @@ img {
 <!-- BOOK -->
 <div class="book" id="book">
 
-  <!-- COPERTINA -->
-  <div class="page cover"></div>
+  <!-- COPERTINA -->
+  <div class="page cover"></div>
 
-  <!-- PAGINA 1: ORSETTI -->
-  <div class="page page1">
-    <div class="page-content">
-      <h2 class="neon">Happy birthday Azzu 🧸</h2>
-      <img src="https://i.imgur.com/7YQZ7ZC.png" alt="Orsetti coppia" />
-    </div>
-  </div>
+  <!-- PAGINA 1: ORSETTI -->
+  <div class="page page1">
+    <div class="page-content">
+      <h2 class="neon">Happy birthday Azzu 🧸</h2>
+      <img src="https://i.imgur.com/7YQZ7ZC.png" alt="Orsetti coppia" />
+    </div>
+  </div>
 
-  <!-- PAGINA 2: MESSAGGIO -->
-  <div class="page page2">
-    <div class="page-content">
-      <h2 class="neon">+18 🎂</h2>
-      <p>
-        Amore mio,<br /><br />
-        oggi diventi grande, ma per me resti sempre
-        la persona che mi fa sorridere ogni giorno.
-        Camminare al tuo fianco è il regalo più bello
-        che potessi desiderare.
-      </p>
-      <p>
-        Buon compleanno, Azzu.<br />
-        Io ci sarò sempre. 💜
-      </p>
-    </div>
-  </div>
+  <!-- PAGINA 2: MESSAGGIO -->
+  <div class="page page2">
+    <div class="page-content">
+      <h2 class="neon">+18 🎂</h2>
+      <p>
+        Amore mio,<br /><br />
+        oggi diventi grande, ma per me resti sempre
+        la persona che mi fa sorridere ogni giorno.
+        Camminare al tuo fianco è il regalo più bello
+        che potessi desiderare.
+      </p>
+      <p>
+        Buon compleanno, Azzu.<br />
+        Io ci sarò sempre. 💜
+      </p>
+    </div>
+  </div>
 
 </div>
 
@@ -150,16 +142,16 @@ const columns = m.width / fontSize;
 const drops = Array.from({ length: columns }, () => Math.random() * 20);
 
 function drawMatrix() {
-  mctx.fillStyle = "rgba(0,0,0,0.08)";
-  mctx.fillRect(0, 0, m.width, m.height);
-  mctx.fillStyle = "#c44dff";
-  mctx.font = fontSize + "px monospace";
+  mctx.fillStyle = "rgba(0,0,0,0.08)";
+  mctx.fillRect(0, 0, m.width, m.height);
+  mctx.fillStyle = "#c44dff";
+  mctx.font = fontSize + "px monospace";
 
-  drops.forEach((y, i) => {
-    const char = text[Math.floor(Math.random() * text.length)];
-    mctx.fillText(char, i * fontSize, y * fontSize);
-    drops[i] = y * fontSize > m.height && Math.random() > 0.97 ? 0 : y + 1;
-  });
+  drops.forEach((y, i) => {
+    const char = text[Math.floor(Math.random() * text.length)];
+    mctx.fillText(char, i * fontSize, y * fontSize);
+    drops[i] = y * fontSize > m.height && Math.random() > 0.97 ? 0 : y + 1;
+  });
 }
 setInterval(drawMatrix, 33);
 
@@ -171,28 +163,28 @@ f.height = window.innerHeight;
 
 let fireworks = [];
 setInterval(() => {
-  const x = Math.random() * f.width;
-  const y = Math.random() * f.height / 2;
-  for (let i = 0; i < 40; i++) {
-    fireworks.push({
-      x,
-      y,
-      dx: Math.cos(i) * Math.random() * 4,
-      dy: Math.sin(i) * Math.random() * 4,
-      life: 60,
-    });
-  }
+  const x = Math.random() * f.width;
+  const y = Math.random() * f.height / 2;
+  for (let i = 0; i < 40; i++) {
+    fireworks.push({
+      x,
+      y,
+      dx: Math.cos(i) * Math.random() * 4,
+      dy: Math.sin(i) * Math.random() * 4,
+      life: 60,
+    });
+  }
 }, 1200);
 
 function drawFireworks() {
-  fctx.clearRect(0, 0, f.width, f.height);
-  fireworks.forEach((p, i) => {
-    fctx.fillStyle = "#ff6bff";
-    fctx.fillRect(p.x, p.y, 3, 3);
-    p.x += p.dx;
-    p.y += p.dy;
-    if (--p.life <= 0) fireworks.splice(i, 1);
-  });
+  fctx.clearRect(0, 0, f.width, f.height);
+  fireworks.forEach((p, i) => {
+    fctx.fillStyle = "#ff6bff";
+    fctx.fillRect(p.x, p.y, 3, 3);
+    p.x += p.dx;
+    p.y += p.dy;
+    if (--p.life <= 0) fireworks.splice(i, 1);
+  });
 }
 setInterval(drawFireworks, 30);
 
@@ -200,9 +192,9 @@ setInterval(drawFireworks, 30);
 let state = 0;
 const book = document.getElementById("book");
 book.onclick = () => {
-  state++;
-  if (state === 1) book.classList.add("open1");
-  if (state === 2) book.classList.add("open2");
+  state++;
+  if (state === 1) book.classList.add("open1");
+  if (state === 2) book.classList.add("open2");
 };
 </script>
 
