@@ -2,10 +2,11 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8" />
-<title>Happy birthday Azzu</title>
+<title>Happy Birthday Azzu</title>
 
-<!-- PRELOAD COPERTINA -->
+<!-- PRELOAD IMMAGINI -->
 <link rel="preload" as="image" href="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg">
+<link rel="preload" as="image" href="https://i.imgur.com/7YQZ7ZC.png">
 
 <style>
 html, body {
@@ -16,13 +17,13 @@ html, body {
   font-family: 'Courier New', monospace;
 }
 
+/* ===== CANVAS ===== */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
 }
 
-/* Canvas dietro il libro */
 #matrix { z-index: 0; }
 #fireworks { z-index: 0; }
 
@@ -49,26 +50,51 @@ canvas {
   transform-origin: left;
   transition: transform 1.5s;
   backface-visibility: hidden;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
 }
 
-/* Z-index iniziale */
-.cover { 
-  z-index: 14; 
-  background-image: url('https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg');
-  background-size: cover;
-  background-position: center;
+/* COPERTINA: scritta pulsante */
+.cover {
+  z-index: 14;
+  background: linear-gradient(45deg, #c44dff, #6a00ff);
+  color: white;
+  font-size: 2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 1.2s infinite;
 }
-.page1 { z-index: 13; }
-.page2 { z-index: 12; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* PAGINE */
+.page1 { z-index: 15; }
+.page2 { z-index: 16; }
 
 .book.open1 .cover { transform: rotateY(-160deg); }
 .book.open2 .page1 { transform: rotateY(-160deg); }
+.book.back1 .cover { transform: rotateY(0deg); }
+.book.back2 .page1 { transform: rotateY(0deg); }
 
-/* Contenuto delle pagine */
+.page-content img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #ff6bff;
+}
+
 .page-content {
-  padding: 20px;
+  padding: 10px;
   color: #f3d9ff;
-  text-align: center;
 }
 
 .neon {
@@ -79,15 +105,20 @@ canvas {
     0 0 45px #6a00ff;
 }
 
-img {
-  max-width: 100%;
-  max-height: 180px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px #ff6bff;
+/* CUORI BATTONO */
+.heart {
+  position: absolute;
+  font-size: 2em;
+  color: #ff4d88;
+  animation: beat 1s infinite;
+}
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.4); }
 }
 </style>
 </head>
-
 <body>
 
 <!-- MATRIX -->
@@ -100,20 +131,18 @@ img {
 <div class="book" id="book">
 
   <!-- COPERTINA -->
-  <div class="page cover"></div>
+  <div class="page cover">HAPPY BIRTHDAY</div>
 
-  <!-- PAGINA 1: ORSETTI -->
+  <!-- PAGINA 1: IMMAGINE -->
   <div class="page page1">
     <div class="page-content">
-      <h2 class="neon">Happy birthday Azzu 🧸</h2>
       <img src="https://i.imgur.com/7YQZ7ZC.png" alt="Orsetti coppia" />
     </div>
   </div>
 
-  <!-- PAGINA 2: MESSAGGIO -->
+  <!-- PAGINA 2: DEDICA -->
   <div class="page page2">
-    <div class="page-content">
-      <h2 class="neon">+18 🎂</h2>
+    <div class="page-content neon">
       <p>
         Amore mio,<br /><br />
         oggi diventi grande, ma per me resti sempre
@@ -137,66 +166,92 @@ const mctx = m.getContext("2d");
 m.width = window.innerWidth;
 m.height = window.innerHeight;
 
-const text = "HAPPY BIRTHDAY AZZU ";
-const fontSize = 18;
-const columns = m.width / fontSize;
+const text = "HAPPY BIRTHDAY AZZU";
+const fontSize = 20;
+const columns = Math.floor(m.width / fontSize);
 const drops = Array.from({ length: columns }, () => Math.random() * 20);
 
 function drawMatrix() {
   mctx.fillStyle = "rgba(0,0,0,0.08)";
-  mctx.fillRect(0, 0, m.width, m.height);
+  mctx.fillRect(0,0,m.width,m.height);
   mctx.fillStyle = "#c44dff";
   mctx.font = fontSize + "px monospace";
 
-  drops.forEach((y, i) => {
+  for(let i=0;i<columns;i++){
     const char = text[Math.floor(Math.random() * text.length)];
-    mctx.fillText(char, i * fontSize, y * fontSize);
-    drops[i] = y * fontSize > m.height && Math.random() > 0.97 ? 0 : y + 1;
-  });
+    mctx.fillText(char, i*fontSize, drops[i]*fontSize);
+    drops[i] = drops[i]*fontSize > m.height && Math.random() > 0.95 ? 0 : drops[i]+0.5;
+  }
 }
-setInterval(drawMatrix, 33);
+setInterval(drawMatrix, 50);
 
 /* ===== FIREWORKS ===== */
 const f = document.getElementById("fireworks");
 const fctx = f.getContext("2d");
 f.width = window.innerWidth;
 f.height = window.innerHeight;
-
 let fireworks = [];
+
 setInterval(() => {
   const x = Math.random() * f.width;
-  const y = Math.random() * f.height / 2;
-  for (let i = 0; i < 40; i++) {
+  const y = Math.random() * f.height/2;
+  for(let i=0;i<30;i++){
     fireworks.push({
-      x,
-      y,
-      dx: Math.cos(i) * Math.random() * 4,
-      dy: Math.sin(i) * Math.random() * 4,
-      life: 60,
+      x,y,
+      dx: Math.cos(i)*Math.random()*4,
+      dy: Math.sin(i)*Math.random()*4,
+      life: 50
     });
   }
-}, 1200);
+},1200);
 
-function drawFireworks() {
-  fctx.clearRect(0, 0, f.width, f.height);
-  fireworks.forEach((p, i) => {
+function drawFireworks(){
+  fctx.clearRect(0,0,f.width,f.height);
+  fireworks.forEach((p,i)=>{
     fctx.fillStyle = "#ff6bff";
-    fctx.fillRect(p.x, p.y, 3, 3);
+    fctx.fillRect(p.x,p.y,3,3);
     p.x += p.dx;
     p.y += p.dy;
-    if (--p.life <= 0) fireworks.splice(i, 1);
+    if(--p.life<=0) fireworks.splice(i,1);
   });
 }
-setInterval(drawFireworks, 30);
+setInterval(drawFireworks,30);
 
-/* ===== BOOK CLICK ===== */
-let state = 0;
+/* ===== BOOK CLICK / SFOLIO AVANTI E INDIETRO ===== */
 const book = document.getElementById("book");
-book.onclick = () => {
-  state++;
-  if (state === 1) book.classList.add("open1");
-  if (state === 2) book.classList.add("open2");
-};
+let state = 0;
+
+book.onclick = (e)=>{
+  const rect = book.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  if(x < rect.width/2){ // clic sul lato sinistro -> torna indietro
+    if(state>0) state--;
+  } else { // clic lato destro -> avanti
+    if(state<2) state++;
+  }
+  updateBook();
+}
+
+function updateBook(){
+  book.classList.remove("open1","open2","back1","back2");
+  if(state===1) book.classList.add("open1");
+  if(state===2) book.classList.add("open2");
+  if(state===0) book.classList.add("back1");
+  if(state===1) book.classList.add("back2");
+}
+
+/* ===== CUORI ===== */
+function createHeart(){
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random()*window.innerWidth + 'px';
+  heart.style.top = Math.random()*window.innerHeight + 'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),1000);
+}
+
+// Cuori ogni 500ms
+setInterval(createHeart,500);
 </script>
 
 </body>
