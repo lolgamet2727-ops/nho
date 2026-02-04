@@ -33,15 +33,30 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
   overflow:hidden; padding:15px; border-radius:10px;
 }
 .page1 { z-index:12; }
-.page2 { z-index:11; }
+.page2 { z-index:11; position:relative; }
 
 /* ===== CONTENUTO ===== */
 .page-content img {
   max-width:100%; max-height:250px;
-  border-radius:12px; box-shadow:0 0 30px #ff6bff;
+  border-radius:12px; box-shadow:0 0 30px #ff6bff; z-index:2; position:relative;
 }
-.page-content { color:#f3d9ff; font-size:1.25em; }
+.page-content { color:#f3d9ff; font-size:1.25em; z-index:2; position:relative; }
 .neon { color:#d46bff; text-shadow:0 0 10px #d46bff,0 0 25px #b84dff,0 0 45px #6a00ff; }
+
+/* ===== SFONDO TI AMO ===== */
+.page2::before {
+  content:"TI AMO TI AMO TI AMO 💜 ❤️ TI AMO 💖 TI AMO";
+  position:absolute;
+  top:0; left:0; width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:50px; font-weight:bold;
+  color:rgba(255,105,180,0.1); /* leggermente trasparente */
+  text-align:center;
+  flex-wrap:wrap;
+  z-index:1;
+  pointer-events:none;
+  transform:rotate(-10deg);
+}
 
 /* ===== CUORI ===== */
 .heart {
@@ -67,7 +82,7 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
     </div>
   </div>
 
-  <!-- Pagina 2: Foto finale -->
+  <!-- Pagina 2: Foto finale con sfondo TI AMO -->
   <div class="page page2">
     <div class="page-content">
       <img src="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg" alt="Foto finale">
