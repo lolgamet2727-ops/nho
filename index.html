@@ -48,7 +48,6 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
 .heart {
   position:absolute;
   font-size:2em;
-  color:#ff4d88;
   animation:beat 1s infinite;
 }
 @keyframes beat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.4);} }
@@ -68,10 +67,12 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
     </div>
   </div>
 
-  <!-- Pagina 2: Orsetti GIF -->
+  <!-- Pagina 2: Emoji romantiche -->
   <div class="page page2">
-    <div class="page-content">
-      <img src="https://i.imgur.com/7YQZ7ZC.gif" alt="Orsetti abbracciati">
+    <div class="page-content" style="font-size:3em;">
+      ❤️🧸💖🧸❤️<br>
+      💕🧸💞🧸💕<br>
+      ❤️🧸💖🧸❤️
     </div>
   </div>
 
@@ -166,6 +167,7 @@ function createHeart(){
   heart.className="heart";
   heart.style.left=Math.random()*window.innerWidth+"px";
   heart.style.top=Math.random()*window.innerHeight+"px";
+  heart.textContent = "❤️🧸"; // emoji cuore + orsetto
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),1200);
 }
