@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+,<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -12,34 +12,26 @@ html, body {
   overflow:hidden;
   font-family:'Courier New', monospace;
 }
-canvas {
-  position: fixed;
-  top:0;
-  left:0;
-  z-index:0;
-}
+canvas { position:fixed; top:0; left:0; z-index:0; }
 
 /* ===== LIBRO ===== */
 .book {
   position:absolute;
-  top:50%;
-  left:50%;
+  top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:520px;
-  height:380px;
-  perspective:1600px;
+  width:520px; height:400px;
+  perspective:1800px;
   cursor:pointer;
   z-index:10;
 }
 .page {
   position:absolute;
-  width:100%;
-  height:100%;
+  width:100%; height:100%;
   background:#1f0026;
   border:2px solid #c77dff;
   box-shadow:0 0 40px #b84dff;
   transform-origin:left;
-  transition: transform 1.2s;
+  transition: transform 1.2s cubic-bezier(0.77,0,0.175,1);
   backface-visibility:hidden;
   display:flex;
   align-items:center;
@@ -47,20 +39,21 @@ canvas {
   flex-direction:column;
   text-align:center;
   overflow:hidden;
-  padding:10px;
+  padding:15px;
+  border-radius:10px;
 }
-.page1 { z-index:13; } /* dedica */
-.page2 { z-index:12; } /* orsetti */
-.page3 { z-index:11; } /* foto copertina */
+.page1 { z-index:13; }
+.page2 { z-index:12; }
+.page3 { z-index:11; }
 
 /* ===== CONTENUTO ===== */
 .page-content img {
   max-width:100%;
   max-height:250px;
-  border-radius:10px;
+  border-radius:12px;
   box-shadow:0 0 30px #ff6bff;
 }
-.page-content { color:#f3d9ff; font-size:1.2em; }
+.page-content { color:#f3d9ff; font-size:1.25em; }
 .neon { color:#d46bff; text-shadow:0 0 10px #d46bff,0 0 25px #b84dff,0 0 45px #6a00ff; }
 
 /* ===== CUORI ===== */
@@ -74,6 +67,13 @@ canvas {
   0%,100%{transform:scale(1);}
   50%{transform:scale(1.4);}
 }
+
+/* ===== PULSANTE MATRIX ===== */
+.matrix-char {
+  font-weight:bold;
+}
+
+/* ===== SFUMATURE MATRIX ===== */
 </style>
 </head>
 <body>
@@ -89,7 +89,7 @@ canvas {
       <p>Buon compleanno, Azzu.<br>Io ci sarò sempre. 💜</p>
     </div>
   </div>
-  
+
   <!-- Pagina 2: Orsetti -->
   <div class="page page2">
     <div class="page-content">
@@ -97,7 +97,7 @@ canvas {
     </div>
   </div>
 
-  <!-- Pagina 3: Foto copertina -->
+  <!-- Pagina 3: Foto finale -->
   <div class="page page3">
     <div class="page-content">
       <img src="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg" alt="Copertina finale">
@@ -107,11 +107,8 @@ canvas {
 
 <script>
 /* ===== MATRIX ===== */
-const m=document.getElementById("matrix");
-const ctx=m.getContext("2d");
-m.width=window.innerWidth;
-m.height=window.innerHeight;
-
+const m=document.getElementById("matrix"), ctx=m.getContext("2d");
+m.width=window.innerWidth; m.height=window.innerHeight;
 const message="HAPPY BIRTHDAY AZZU";
 const fontSize=22;
 const columns=Math.floor(m.width/fontSize);
@@ -127,29 +124,22 @@ function drawMatrix(){
     const colors=["#d46bff","#b84dff","#ff6bff"];
     ctx.fillStyle=colors[Math.floor(Math.random()*colors.length)];
     ctx.fillText(char,i*fontSize,drops[i]*fontSize);
-    drops[i] = drops[i]*fontSize>m.height ? 0 : drops[i]+0.5;
+    drops[i] = drops[i]*fontSize>m.height ? 0 : drops[i]+0.7;
   }
 }
-setInterval(drawMatrix,50);
+setInterval(drawMatrix,40);
 
 /* ===== FUOCHI D'ARTIFICIO ===== */
-const f=document.getElementById("fireworks");
-const fctx=f.getContext("2d");
+const f=document.getElementById("fireworks"), fctx=f.getContext("2d");
 f.width=window.innerWidth; f.height=window.innerHeight;
 let fireworks=[];
-
 setInterval(()=>{
   const x=Math.random()*f.width;
   const y=Math.random()*f.height/2;
-  for(let i=0;i<35;i++){
-    fireworks.push({
-      x,y,
-      dx:Math.cos(i)*Math.random()*4,
-      dy:Math.sin(i)*Math.random()*4,
-      life:60
-    });
+  for(let i=0;i<40;i++){
+    fireworks.push({x,y,dx:Math.cos(i)*Math.random()*5,dy:Math.sin(i)*Math.random()*5,life:60});
   }
-},1000);
+},900);
 
 function drawFireworks(){
   fctx.clearRect(0,0,f.width,f.height);
@@ -160,9 +150,9 @@ function drawFireworks(){
     if(--p.life<=0) fireworks.splice(i,1);
   });
 }
-setInterval(drawFireworks,30);
+setInterval(drawFireworks,25);
 
-/* ===== SFOLIO LIBRO ===== */
+/* ===== LIBRO SFOLIO ===== */
 const book=document.getElementById("book");
 const pages=3;
 let state=0;
@@ -182,8 +172,12 @@ function updateBook(){
   const pagesDiv=["page1","page2","page3"];
   pagesDiv.forEach((p,i)=>{
     const el=document.querySelector("."+p);
-    el.style.transform="rotateY(0deg)";
-    if(i<state) el.style.transform="rotateY(-160deg)";
+    // effetto leggero curvatura
+    if(i<state){
+      el.style.transform="rotateY(-160deg) rotateZ("+(Math.random()*2-1)+"deg)";
+    } else {
+      el.style.transform="rotateY(0deg)";
+    }
   });
 }
 
@@ -197,7 +191,7 @@ function createHeart(){
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),1200);
 }
-setInterval(createHeart,500);
+setInterval(createHeart,400);
 
 /* ===== ADATTAMENTO FINESTRA ===== */
 window.addEventListener("resize",()=>{
@@ -207,5 +201,6 @@ window.addEventListener("resize",()=>{
   f.height=window.innerHeight;
 });
 </script>
+
 </body>
 </html>
