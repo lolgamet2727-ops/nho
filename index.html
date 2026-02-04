@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <title>Happy Birthday Azzu</title>
-
 <style>
 html, body { margin:0; padding:0; background:black; overflow:hidden; font-family:'Courier New', monospace; }
 canvas { position: fixed; top:0; left:0; z-index:0; }
@@ -12,7 +11,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
   position:absolute;
   top:50%; left:50%;
   transform:translate(-50%,-50%);
-  width:500px; height:320px;
+  width:520px; height:350px;
   perspective:1600px;
   cursor:pointer;
   z-index:10;
@@ -41,7 +40,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 .page2 { z-index:12; } /* dedica */
 .page3 { z-index:11; } /* orsetti */
 
-.page-content img { max-width:100%; max-height:220px; border-radius:10px; box-shadow:0 0 20px #ff6bff; }
+.page-content img { max-width:100%; max-height:250px; border-radius:10px; box-shadow:0 0 20px #ff6bff; }
 .page-content { color:#f3d9ff; font-size:1.2em; }
 .neon { color:#d46bff; text-shadow:0 0 10px #d46bff,0 0 25px #b84dff,0 0 45px #6a00ff; }
 
@@ -66,8 +65,8 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 
 <script>
 /* ===== MATRIX ===== */
-const m = document.getElementById("matrix"), ctx = m.getContext("2d");
-m.width = window.innerWidth; m.height = window.innerHeight;
+const m=document.getElementById("matrix"), ctx=m.getContext("2d");
+m.width=window.innerWidth; m.height=window.innerHeight;
 const message="HAPPY BIRTHDAY AZZU", fontSize=20, columns=Math.floor(m.width/fontSize);
 const drops=Array(columns).fill(0);
 function drawMatrix(){
@@ -87,15 +86,26 @@ setInterval(drawMatrix,50);
 
 /* ===== FIREWORKS ===== */
 const f=document.getElementById("fireworks"), fctx=f.getContext("2d");
-f.width=window.innerWidth; f.height=window.innerHeight; let fireworks=[];
+f.width=window.innerWidth; f.height=window.innerHeight;
+let fireworks=[];
 setInterval(()=>{
   const x=Math.random()*f.width, y=Math.random()*f.height/2;
-  for(let i=0;i<30;i++){fireworks.push({x,y,dx:Math.cos(i)*Math.random()*4,dy:Math.sin(i)*Math.random()*4,life:50});}
+  for(let i=0;i<30;i++){
+    fireworks.push({x,y,dx:Math.cos(i)*Math.random()*4,dy:Math.sin(i)*Math.random()*4,life:50});
+  }
 },1200);
-function drawFireworks(){ fctx.clearRect(0,0,f.width,f.height); fireworks.forEach((p,i)=>{fctx.fillStyle="#ff6bff"; fctx.fillRect(p.x,p.y,3,3); p.x+=p.dx; p.y+=p.dy; if(--p.life<=0) fireworks.splice(i,1); });}
+function drawFireworks(){
+  fctx.clearRect(0,0,f.width,f.height);
+  fireworks.forEach((p,i)=>{
+    fctx.fillStyle="#ff6bff";
+    fctx.fillRect(p.x,p.y,3,3);
+    p.x+=p.dx; p.y+=p.dy;
+    if(--p.life<=0) fireworks.splice(i,1);
+  });
+}
 setInterval(drawFireworks,30);
 
-/* ===== BOOK SFOLIO AVANTI/INDIETRO ===== */
+/* ===== BOOK SFOLIO ===== */
 const book=document.getElementById("book"), pages=4;
 let state=0;
 book.onclick=(e)=>{
