@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <title>Happy Birthday Azzu</title>
 
-<!-- PRELOAD IMMAGINI -->
+<!-- Preload immagini -->
 <link rel="preload" as="image" href="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg">
 <link rel="preload" as="image" href="https://i.imgur.com/7YQZ7ZC.png">
 
@@ -17,13 +17,15 @@ html, body {
   font-family: 'Courier New', monospace;
 }
 
-/* ===== CANVAS ===== */
+/* Canvas dietro il libro */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 0;
 }
 
+/* Matrix */
 #matrix { z-index: 0; }
 #fireworks { z-index: 0; }
 
@@ -33,8 +35,8 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 360px;
-  height: 260px;
+  width: 500px;   /* più largo per il testo */
+  height: 300px;  /* più alto per il testo */
   perspective: 1600px;
   cursor: pointer;
   z-index: 10;
@@ -50,51 +52,54 @@ canvas {
   transform-origin: left;
   transition: transform 1.5s;
   backface-visibility: hidden;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  overflow: hidden;
+  padding: 10px;
 }
 
-/* COPERTINA: scritta pulsante */
+/* Copertina: scritta pulsante */
 .cover {
   z-index: 14;
-  background: linear-gradient(45deg, #c44dff, #6a00ff);
-  color: white;
-  font-size: 2em;
+  color: #fff;
+  font-size: 2.5em;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   animation: pulse 1.2s infinite;
 }
 
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.2); }
 }
 
-/* PAGINE */
-.page1 { z-index: 15; }
-.page2 { z-index: 16; }
+/* Pagine successive */
+.page1 { z-index: 15; } /* immagine copertina.jpg */
+.page2 { z-index: 16; } /* dedica */
+.page3 { z-index: 17; } /* sticker orsetti con cuori */
 
+/* Sfoglia avanti/indietro */
 .book.open1 .cover { transform: rotateY(-160deg); }
 .book.open2 .page1 { transform: rotateY(-160deg); }
+.book.open3 .page2 { transform: rotateY(-160deg); }
+.book.open4 .page3 { transform: rotateY(-160deg); }
 .book.back1 .cover { transform: rotateY(0deg); }
 .book.back2 .page1 { transform: rotateY(0deg); }
+.book.back3 .page2 { transform: rotateY(0deg); }
 
+/* Contenuto */
 .page-content img {
   max-width: 100%;
-  max-height: 180px;
+  max-height: 220px;
   border-radius: 10px;
   box-shadow: 0 0 20px #ff6bff;
 }
 
 .page-content {
-  padding: 10px;
   color: #f3d9ff;
+  font-size: 1.2em;
 }
 
 .neon {
@@ -105,7 +110,7 @@ canvas {
     0 0 45px #6a00ff;
 }
 
-/* CUORI BATTONO */
+/* Cuori pulsanti nell’ultima pagina */
 .heart {
   position: absolute;
   font-size: 2em;
@@ -121,22 +126,20 @@ canvas {
 </head>
 <body>
 
-<!-- MATRIX -->
+<!-- Canvas Matrix e Fireworks -->
 <canvas id="matrix"></canvas>
-
-<!-- FIREWORKS -->
 <canvas id="fireworks"></canvas>
 
 <!-- BOOK -->
 <div class="book" id="book">
 
   <!-- COPERTINA -->
-  <div class="page cover">HAPPY BIRTHDAY</div>
+  <div class="page cover">HAPPY BIRTHDAY AZZU</div>
 
-  <!-- PAGINA 1: IMMAGINE -->
+  <!-- PAGINA 1: IMMAGINE copertina.jpg -->
   <div class="page page1">
     <div class="page-content">
-      <img src="https://i.imgur.com/7YQZ7ZC.png" alt="Orsetti coppia" />
+      <img src="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg" alt="Copertina" />
     </div>
   </div>
 
@@ -154,6 +157,13 @@ canvas {
         Buon compleanno, Azzu.<br />
         Io ci sarò sempre. 💜
       </p>
+    </div>
+  </div>
+
+  <!-- PAGINA 3: ORSETTI + CUORI -->
+  <div class="page page3">
+    <div class="page-content">
+      <img src="https://i.imgur.com/7YQZ7ZC.png" alt="Orsetti abbracciati" />
     </div>
   </div>
 
@@ -217,31 +227,34 @@ function drawFireworks(){
 }
 setInterval(drawFireworks,30);
 
-/* ===== BOOK CLICK / SFOLIO AVANTI E INDIETRO ===== */
+/* ===== BOOK SFOLIO AVANTI/INDIETRO ===== */
 const book = document.getElementById("book");
 let state = 0;
 
 book.onclick = (e)=>{
   const rect = book.getBoundingClientRect();
   const x = e.clientX - rect.left;
-  if(x < rect.width/2){ // clic sul lato sinistro -> torna indietro
+  if(x < rect.width/2){ // clic lato sinistro -> indietro
     if(state>0) state--;
   } else { // clic lato destro -> avanti
-    if(state<2) state++;
+    if(state<3) state++;
   }
   updateBook();
 }
 
 function updateBook(){
-  book.classList.remove("open1","open2","back1","back2");
+  book.classList.remove("open1","open2","open3","open4","back1","back2","back3");
   if(state===1) book.classList.add("open1");
   if(state===2) book.classList.add("open2");
+  if(state===3) book.classList.add("open3");
   if(state===0) book.classList.add("back1");
   if(state===1) book.classList.add("back2");
+  if(state===2) book.classList.add("back3");
 }
 
-/* ===== CUORI ===== */
+/* ===== CUORI NELL'ULTIMA PAGINA ===== */
 function createHeart(){
+  if(state !== 3) return; // solo ultima pagina
   const heart = document.createElement('div');
   heart.className = 'heart';
   heart.style.left = Math.random()*window.innerWidth + 'px';
@@ -249,9 +262,8 @@ function createHeart(){
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),1000);
 }
-
-// Cuori ogni 500ms
 setInterval(createHeart,500);
+
 </script>
 
 </body>
