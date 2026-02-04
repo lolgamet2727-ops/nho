@@ -35,8 +35,8 @@ canvas {
   width: 360px;
   height: 260px;
   perspective: 1600px;
-  z-index: 10; /* sopra i canvas */
   cursor: pointer;
+  z-index: 10;
 }
 
 .page {
@@ -51,19 +51,20 @@ canvas {
   backface-visibility: hidden;
 }
 
-/* Z-index crescente per vedere le pagine sopra i canvas */
+/* Z-index iniziale */
 .cover { 
   z-index: 14; 
   background-image: url('https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg');
   background-size: cover;
   background-position: center;
 }
-.page1 { z-index: 15; }
-.page2 { z-index: 16; }
+.page1 { z-index: 13; }
+.page2 { z-index: 12; }
 
 .book.open1 .cover { transform: rotateY(-160deg); }
 .book.open2 .page1 { transform: rotateY(-160deg); }
 
+/* Contenuto delle pagine */
 .page-content {
   padding: 20px;
   color: #f3d9ff;
