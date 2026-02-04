@@ -1,20 +1,195 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Per Te</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Happy birthday Azzu</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* ===== BOOK ===== */
+.book {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  height: 240px;
+  perspective: 1400px;
+  z-index: 5;
+}
+
+.cover, .page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #1a001f;
+  border: 2px solid #c77dff;
+  box-shadow: 0 0 25px #b84dff;
+  transform-origin: left;
+  transition: transform 2s;
+}
+
+.cover { z-index: 4; }
+
+.page {
+  background: #2a0033;
+  color: #f3d9ff;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.page1 { z-index: 3; }
+.page2 { z-index: 2; }
+
+.book.open .cover {
+  transform: rotateY(-160deg);
+}
+.book.open .page1 {
+  transform: rotateY(-150deg);
+}
+
+.neon {
+  color: #d46bff;
+  text-shadow:
+    0 0 10px #d46bff,
+    0 0 25px #b84dff,
+    0 0 45px #6a00ff;
+}
+
+h1 { margin: 0; font-size: 26px; }
+p { margin-top: 12px; font-size: 15px; }
+
+.bears {
+  font-size: 48px;
+  text-align: center;
+  margin-top: 10px;
+}
+</style>
 </head>
+
 <body>
-    <div class="glass-card">
-        <img src="https://i.postimg.cc" class="top-gif">
-        <h1>Sei il mio tutto</h1>
-        <p>Je te laisserai des mots...</p>
-        <button id="playButton">Premi per la musica 🎵</button>
-    </div>
-    <script src="script.js"></script>
+
+<!-- MATRIX -->
+<canvas id="matrix"></canvas>
+
+<!-- FIREWORKS -->
+<canvas id="fireworks"></canvas>
+
+<!-- BOOK -->
+<div class="book" id="book">
+  <div class="cover"></div>
+
+  <div class="page page1">
+    <h1 class="neon">Happy birthday Azzu 🎂</h1>
+    <p>Oggi compi 18 anni.</p>
+    <p>Un nuovo capitolo della tua vita inizia ora.</p>
+    <p>Che tu possa sentirti sempre libera, forte e amata.</p>
+    <p class="neon">+18 🔥</p>
+  </div>
+
+  <div class="page page2">
+    <div class="bears">🧸❤️🧸</div>
+    <p>
+      Amore mio,<br><br>
+      oggi diventi grande, ma per me resti sempre
+      la persona che mi fa sorridere ogni giorno.
+      Camminare al tuo fianco è il regalo più bello
+      che potessi desiderare.
+    </p>
+    <p>
+      Buon compleanno, Azzu.<br>
+      Io ci sarò sempre. 💜
+    </p>
+  </div>
+</div>
+
+<script>
+/* ===== MATRIX (solo Happy birthday Azzu) ===== */
+const matrixCanvas = document.getElementById("matrix");
+const mctx = matrixCanvas.getContext("2d");
+matrixCanvas.width = window.innerWidth;
+matrixCanvas.height = window.innerHeight;
+
+const matrixText = "HAPPY BIRTHDAY AZZU ";
+const fontSize = 18;
+const columns = matrixCanvas.width / fontSize;
+const drops = Array.from({length: columns}, () => Math.random() * 20);
+
+function drawMatrix() {
+  mctx.fillStyle = "rgba(0,0,0,0.08)";
+  mctx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
+  mctx.fillStyle = "#c44dff";
+  mctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const char = matrixText.charAt(Math.floor(Math.random() * matrixText.length));
+    mctx.fillText(char, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.97) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 33);
+
+/* ===== FIREWORKS ===== */
+const fwCanvas = document.getElementById("fireworks");
+const fctx = fwCanvas.getContext("2d");
+fwCanvas.width = window.innerWidth;
+fwCanvas.height = window.innerHeight;
+
+let fireworks = [];
+
+function launchFirework() {
+  const x = Math.random() * fwCanvas.width;
+  const y = Math.random() * fwCanvas.height / 2;
+  for (let i = 0; i < 40; i++) {
+    fireworks.push({
+      x, y,
+      dx: Math.cos(i) * Math.random() * 4,
+      dy: Math.sin(i) * Math.random() * 4,
+      life: 60
+    });
+  }
+}
+
+function drawFireworks() {
+  fctx.clearRect(0,0,fwCanvas.width,fwCanvas.height);
+  fireworks.forEach((p, i) => {
+    fctx.fillStyle = "#ff6bff";
+    fctx.fillRect(p.x, p.y, 3, 3);
+    p.x += p.dx;
+    p.y += p.dy;
+    p.life--;
+    if (p.life <= 0) fireworks.splice(i,1);
+  });
+}
+setInterval(drawFireworks, 30);
+setInterval(launchFirework, 1200);
+
+/* ===== BOOK OPEN ===== */
+setTimeout(() => {
+  document.getElementById("book").classList.add("open");
+}, 1500);
+
+window.onresize = () => {
+  matrixCanvas.width = fwCanvas.width = window.innerWidth;
+  matrixCanvas.height = fwCanvas.height = window.innerHeight;
+};
+</script>
+
 </body>
 </html>
-
-</html>
-
