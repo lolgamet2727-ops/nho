@@ -32,9 +32,8 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
   flex-direction:column; text-align:center;
   overflow:hidden; padding:15px; border-radius:10px;
 }
-.page1 { z-index:13; }
-.page2 { z-index:12; }
-.page3 { z-index:11; }
+.page1 { z-index:12; }
+.page2 { z-index:11; }
 
 /* ===== CONTENUTO ===== */
 .page-content img {
@@ -59,27 +58,19 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
 <canvas id="fireworks"></canvas>
 
 <div class="book" id="book">
-  <!-- Pagina 1: Dedica -->
+  <!-- Pagina 1: Dedica e Happy Birthday -->
   <div class="page page1">
     <div class="page-content neon">
+      <h1 style="font-size:2em;">🎉 Happy Birthday Azzu 🎉</h1>
       <p>Amore mio,<br><br>oggi diventi grande, ma per me resti sempre la persona che mi fa sorridere ogni giorno. Camminare al tuo fianco è il regalo più bello che potessi desiderare.</p>
       <p>Buon compleanno, Azzu.<br>Io ci sarò sempre. 💜</p>
     </div>
   </div>
 
-  <!-- Pagina 2: Emoji romantiche -->
+  <!-- Pagina 2: Foto finale -->
   <div class="page page2">
-    <div class="page-content" style="font-size:3em;">
-      ❤️🧸💖🧸❤️<br>
-      💕🧸💞🧸💕<br>
-      ❤️🧸💖🧸❤️
-    </div>
-  </div>
-
-  <!-- Pagina 3: Foto finale -->
-  <div class="page page3">
     <div class="page-content">
-      <img src="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg" alt="Copertina finale">
+      <img src="https://raw.githubusercontent.com/lolgamet2727-ops/nho/main/copertina.jpeg" alt="Foto finale">
     </div>
   </div>
 </div>
@@ -89,12 +80,12 @@ canvas { position:fixed; top:0; left:0; z-index:0; }
 const m=document.getElementById("matrix"), ctx=m.getContext("2d");
 m.width=window.innerWidth; m.height=window.innerHeight;
 
-const chars="HAPPY BIRTHDAY AZZU".split("");
+const chars="HAPPY BIRTHDAY AZZU ".split("");
 const fontSize=22;
 const columns=Math.floor(m.width/fontSize);
 let drops=[];
 for(let i=0;i<columns;i++){
-  drops[i]={y:Math.random()*m.height, speed:Math.random()*1.5+0.5, length:Math.random()*20+5};
+  drops[i]={y:Math.random()*m.height, speed:Math.random()*1+0.5, length:Math.random()*15+5};
 }
 
 function drawMatrix(){
@@ -139,7 +130,7 @@ setInterval(drawFireworks,25);
 
 /* ===== LIBRO SFOLIO ===== */
 const book=document.getElementById("book");
-const pages=3;
+const pages=2;
 let state=0;
 book.onclick=(e)=>{
   const rect=book.getBoundingClientRect();
@@ -149,7 +140,7 @@ book.onclick=(e)=>{
   updateBook();
 };
 function updateBook(){
-  const pagesDiv=["page1","page2","page3"];
+  const pagesDiv=["page1","page2"];
   pagesDiv.forEach((p,i)=>{
     const el=document.querySelector("."+p);
     if(i<state){
@@ -162,7 +153,7 @@ function updateBook(){
 
 /* ===== CUORI PAGINA FINALE ===== */
 function createHeart(){
-  if(state!==2) return;
+  if(state!==1) return;
   const heart=document.createElement("div");
   heart.className="heart";
   heart.style.left=Math.random()*window.innerWidth+"px";
